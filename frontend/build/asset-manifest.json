@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/static/css/main.50ff721c.css",
+    "main.js": "/static/js/main.745997f2.js",
+    "static/js/498.8bef3ec0.chunk.js": "/static/js/498.8bef3ec0.chunk.js",
+    "static/js/703.674d2745.chunk.js": "/static/js/703.674d2745.chunk.js",
+    "static/js/198.dd1cbb60.chunk.js": "/static/js/198.dd1cbb60.chunk.js",
+    "static/js/200.5e91a2c0.chunk.js": "/static/js/200.5e91a2c0.chunk.js",
+    "static/js/539.764225f0.chunk.js": "/static/js/539.764225f0.chunk.js",
+    "static/media/rentCarAdImg.png": "/static/media/rentCarAdImg.adeb6646f443ca57e690.png",
+    "static/media/carmain.png": "/static/media/carmain.078962bd4dc5c3bc7f89.png",
+    "static/media/bg.jpg": "/static/media/bg.47920eba4a9992fb67cf.jpg",
+    "static/media/HeroTrain.jpg": "/static/media/HeroTrain.90b7ea185c2b059d3a62.jpg",
+    "static/media/Tour-Welcome.jpg": "/static/media/Tour-Welcome.0c3073b338db3cc030fc.jpg",
+    "static/media/Kandy-to-Ell-by-train.jpg": "/static/media/Kandy-to-Ell-by-train.f319d13b8a35cbd20166.jpg",
+    "static/media/singletrain.jpg": "/static/media/singletrain.3333a843d377a9bbc6b0.jpg",
+    "static/media/ev.png": "/static/media/ev.888df948e825e00f2a1b.png",
+    "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
+    "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
+    "static/media/revicons.woff": "/static/media/revicons.e8746a624ed098489406.woff",
+    "index.html": "/index.html",
+    "main.50ff721c.css.map": "/static/css/main.50ff721c.css.map",
+    "main.745997f2.js.map": "/static/js/main.745997f2.js.map",
+    "498.8bef3ec0.chunk.js.map": "/static/js/498.8bef3ec0.chunk.js.map",
+    "703.674d2745.chunk.js.map": "/static/js/703.674d2745.chunk.js.map",
+    "198.dd1cbb60.chunk.js.map": "/static/js/198.dd1cbb60.chunk.js.map",
+    "200.5e91a2c0.chunk.js.map": "/static/js/200.5e91a2c0.chunk.js.map",
+    "539.764225f0.chunk.js.map": "/static/js/539.764225f0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.50ff721c.css",
+    "static/js/main.745997f2.js"
+  ]
+}
