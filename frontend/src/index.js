@@ -5,6 +5,9 @@ import App from "./App";
 import axios from "axios";
 import { AuthContextProvider } from "./context/authContext";
 
+// Configure Axios to use the live Render backend URL
+axios.defaults.baseURL = "https://tourism-backend-yrfx.onrender.com/api";
+
 // Attach JWT token as Authorization header on every request
 axios.interceptors.request.use((config) => {
   const token = sessionStorage.getItem("access_token");
