@@ -46,7 +46,7 @@ const Userlist = ({ columns }) => {
 
     doc.setFontSize(20).setTextColor(65, 164, 255); // set font size and blue color
     doc.setFont("helvetica", "bold");
-    doc.text("Rural Tourism", 14, 15); // add heading
+    doc.text("LENS", 14, 15); // add heading
     doc.setFont("helvetica", "normal");
     doc.setFontSize(10).setTextColor(0, 0, 0); // reset font size and color
     doc.text("User Details Report", 14, 23);

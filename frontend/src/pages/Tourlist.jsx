@@ -46,7 +46,7 @@ const Tourlist = ({ columns }) => {
     const date = Date().split(" ");
     const dateStr = date[1] + "-" + date[2] + "-" + date[3];
 
-    doc.text("Rural Tourism", 14, 15).setFontSize(16); // add heading
+    doc.text("LENS", 14, 15).setFontSize(16); // add heading
     doc.text("Tour Details Report", 14, 23).setFontSize(10);
     doc.text(`Report Generated Date: ${dateStr}`, 14, 30).setFontSize(10);
     doc.text("Tousrism.co ,India ", 14, 37).setFontSize(10);

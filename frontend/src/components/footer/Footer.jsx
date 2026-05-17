@@ -11,7 +11,7 @@ const Footer = () => {
     <div className="cursor-pointer w-full bg-gradient-to-r from-gray-800 to-black py-16 px-10 grid md:grid-cols-2 gap-8 text-gray-300 relative overflow-hidden">
       <div className="z-10">
         <h3 className="text-2xl font-bold text-[#41A4FF] hover:scale-105 transition-transform duration-300">
-        Rural Tourism
+        LENS
         </h3>
         <p className="py-4">
           Your gateway to authentic rural experiences. We connect travelers

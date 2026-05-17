@@ -40,7 +40,7 @@ const Hero2 = () => {
             <h1 className="text-4xl md:text-5xl font-bold">Explore</h1>
             <h1 className="text-4xl md:text-5xl font-bold">the Wonders in</h1>
             <h1 className="text-4xl md:text-6xl font-bold text-[#41A4FF]">
-              Rural Tourism
+              LENS
             </h1>
             <p className="mt-4">
               Escape the city and immerse yourself in the charm of rural villages,

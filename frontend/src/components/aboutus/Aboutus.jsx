@@ -141,7 +141,7 @@ const Aboutus = () => {
                   isVisible ? "opacity-100" : "opacity-0"
                 }`}
               >
-                Discover the Beauty of Rural Tourism
+                Discover the Beauty of LENS
               </h2>
               <p
                 className={`text-body-color mb-8 text-base transition-opacity duration-700 ${

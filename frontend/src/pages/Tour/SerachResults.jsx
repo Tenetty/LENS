@@ -70,7 +70,7 @@ const SerachResults = () => {
                     }}
                   >
                     an Nature awaits you <br />
-                    Discover Rural Tourism
+                    Discover LENS
                   </h4>
                 </div>
               </div>
@@ -104,7 +104,7 @@ const SerachResults = () => {
             <AiOutlineRight className="mt-1 mx-2" />
           </li>
           <li class="text-neutral-500 dark:text-neutral-400">
-            Explore Rural Tourism
+            Explore LENS
           </li>
         </ol>
       </nav>

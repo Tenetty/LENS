@@ -26,7 +26,7 @@ const HeroTour = () => {
                   fontWeight: "bolder",
                 }}
               >
-                Do More With Rural Tourism
+                Do More With LENS
               </h2>
               <div>
                 <div className="mt-12 w-1/2 mr-auto ml-auto">
@@ -40,7 +40,7 @@ const HeroTour = () => {
                     }}
                   >
                     an Nature awaits you <br />
-                    Discover Rural Tourism
+                    Discover LENS
                   </h4>
                 </div>
               </div>

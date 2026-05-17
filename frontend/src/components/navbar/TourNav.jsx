@@ -5,7 +5,7 @@ import { Menu } from "@headlessui/react";
 const nav_links = [
   {
     path: "/tours/home",
-    display: "Explore Rural Tourism",
+    display: "Explore LENS",
   },
   {
     path: "/sunandbeach",

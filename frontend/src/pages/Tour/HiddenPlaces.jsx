@@ -43,7 +43,7 @@ const HiddenPlaces = () => {
     // </div>
     <div class="mx-auto max-w-2xl px-4 pb-16 sm:px-6 lg:max-w-7xl lg:px-8 mt-10">
       <p class="uppercase text-5xl">
-        get a brief about Hidden beauties in Rural Tourism
+        get a brief about Hidden beauties in LENS
       </p>
       {/* <!-- first --> */}
       <div class="grid grid-cols-1 md:grid-cols-2 mt-10 gap-5">

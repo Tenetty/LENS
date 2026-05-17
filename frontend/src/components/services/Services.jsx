@@ -138,7 +138,7 @@ const Services = () => {
                 What We Offer
               </h2>
               <p className="text-body-color text-base">
-                Explore our wide range of rural tourism services designed to
+                Explore our wide range of LENS services designed to
                 make your countryside adventure seamless and memorable.
               </p>
             </div>
