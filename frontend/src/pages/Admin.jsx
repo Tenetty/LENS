@@ -1,11 +1,9 @@
-import { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/authContext";
 import { Link } from "react-router-dom";
 import backgroundImage from "../assets/images/bg.jpg";
-import React from "react";
+import axios from "axios";
 import {
-  LineChart,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -19,58 +17,6 @@ import {
   Bar,
 } from "recharts";
 
-const data = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
-
-const data2 = [
-  { name: "Users", value: 800 },
-  { name: "Hotels", value: 300 },
-  { name: "Vehicles", value: 300 },
-  { name: "Tours", value: 200 },
-];
-
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const RADIAN = Math.PI / 180;
@@ -81,7 +27,6 @@ const renderCustomizedLabel = ({
   innerRadius,
   outerRadius,
   percent,
-  index,
 }) => {
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const x = cx + radius * Math.cos(-midAngle * RADIAN);
@@ -95,13 +40,38 @@ const renderCustomizedLabel = ({
       textAnchor={x > cx ? "start" : "end"}
       dominantBaseline="central"
     >
-      {`${(percent * 100).toFixed(0)}%`}
+      {percent > 0 ? `${(percent * 100).toFixed(0)}%` : ""}
     </text>
   );
 };
 
 const Admin = () => {
   const { user } = useContext(AuthContext);
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    axios.get("/users/admin/stats")
+      .then((res) => {
+        setStats(res.data);
+      })
+      .catch((err) => {
+        console.error("Failed to load admin stats:", err);
+      });
+  }, []);
+
+  const barData = stats ? [
+    { name: "Hotels", count: stats.reservations.hotels },
+    { name: "Vehicles", count: stats.reservations.vehicles },
+    { name: "Activities", count: stats.reservations.activities },
+    { name: "Tours", count: stats.reservations.tours },
+  ] : [];
+
+  const pieData = stats ? [
+    { name: "Users", value: stats.counts.users },
+    { name: "Hotels", value: stats.counts.hotels },
+    { name: "Vehicles", value: stats.counts.vehicles },
+    { name: "Tours", value: stats.counts.tours },
+  ] : [];
 
   return (
     <div
@@ -121,25 +91,25 @@ const Admin = () => {
         <div className="flex flex-row col-span-3 lg:px-32 px-8 pt-8 justify-between items-stretch gap-10">
           <Link
             to="/users"
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
+            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white text-center"
           >
             User Management
           </Link>
           <Link
             to="/hotels"
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
+            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white text-center"
           >
             Hotel Management
           </Link>
           <Link
             to="/pending-hotels"
-            className="p-10 flex-1 hover:bg-[#FF8042] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
+            className="p-10 flex-1 hover:bg-[#FF8042] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white text-center"
           >
             Hotel Approvals
           </Link>
           <Link
             to="/tours"
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
+            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white text-center"
           >
             Tour Packages
           </Link>
@@ -148,19 +118,13 @@ const Admin = () => {
         <div className="flex flex-row col-span-3 lg:px-32 px-8 pt-8 justify-between items-stretch gap-10">
           <Link
             to="/vehicle"
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
+            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white text-center"
           >
             Vehicle Management
           </Link>
           <Link
-            to="/train"
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
-          >
-            Train Management
-          </Link>
-          <Link
-            to=""
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
+            to="/restaurants"
+            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white text-center"
           >
             Restaurant Management
           </Link>
@@ -169,84 +133,76 @@ const Admin = () => {
         <div className="flex flex-row col-span-3 lg:px-32 px-8 pt-8 justify-between items-stretch gap-10">
           <Link
             to="/pending-activities"
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
+            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white text-center"
           >
             Event Management
           </Link>
           <Link
-            to=""
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
+            to="/admin/add-admin"
+            className="p-10 flex-1 hover:bg-[#FE4D42] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white text-center"
           >
-            Reservation Management
-          </Link>
-          <Link
-            to=""
-            className="p-10 flex-1 hover:bg-[#41A4FF] hover:text-2xl transition duration-300 ease-in-out hover:text-white rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]"
-          >
-            Other
+            Add New Admin
           </Link>
         </div>
-        <div className="flex flex-row col-span-2 lg:px-32 px-8 pt-8 justify-between items-stretch gap-10">
-          <div className="p-10 flex-1  rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
+        
+        <div className="flex flex-col lg:flex-row col-span-2 lg:px-32 px-8 pt-8 justify-between items-stretch gap-10">
+          <div className="p-10 flex-1 rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white">
+            <h2 className="text-center text-lg font-bold text-gray-700 mb-6">Total Reservations by Category</h2>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={barData}
+                  margin={{
+                    top: 5,
+                    right: 30,
+                    left: 20,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="count" name="Reservations" fill="#41A4FF" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
-          <div className="p-10 flex-1 rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
-            <div className="w-full">
-              <PieChart width={400} height={400}>
+          
+          <div className="p-10 flex-1 rounded-lg font-bold shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] bg-white">
+            <h2 className="text-center text-lg font-bold text-gray-700 mb-2">System Records Summary</h2>
+            <div className="w-full flex justify-center">
+              <PieChart width={320} height={320}>
                 <Pie
-                  data={data2}
+                  data={pieData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
                   label={renderCustomizedLabel}
-                  outerRadius={150}
+                  outerRadius={100}
                   fill="#8884d8"
                   dataKey="value"
                 >
-                  {data.map((entry, index) => (
+                  {pieData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}
                     />
                   ))}
                 </Pie>
+                <Tooltip />
               </PieChart>
             </div>
-            <div className="grid grid-cols-4">
-              {data2.map((item, index) => (
-                <p key={index} className="cursor-pointer font-bold">
-                  {item.name}
-                </p>
-              ))}
-            </div>
-            <div className="grid grid-cols-4">
-              {COLORS.map((item, index) => (
-                <div
-                  key={index}
-                  className="h-[30px] w-[30px]"
-                  style={{ backgroundColor: item }}
-                >
-                  {item.name}
+            <div className="grid grid-cols-4 gap-2 text-center text-xs mt-2 border-t pt-4">
+              {pieData.map((item, index) => (
+                <div key={index} className="flex flex-col items-center">
+                  <div
+                    className="h-3 w-3 rounded-sm mb-1"
+                    style={{ backgroundColor: COLORS[index] }}
+                  ></div>
+                  <p className="font-semibold text-gray-600">{item.name}</p>
+                  <p className="font-bold text-gray-900 mt-0.5">{item.value}</p>
                 </div>
               ))}
             </div>

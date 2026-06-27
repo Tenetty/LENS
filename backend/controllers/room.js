@@ -52,7 +52,7 @@ const updateRoomAvailability =async (req,res,next)=>{
             
             $push:{
                 
-                "roomNumbers.$.unavailableDates": req.body.dates 
+                "roomNumbers.$.unavailableDates": { $each: req.body.dates }
             }
         })
         res.status(200).json("room updatedd");

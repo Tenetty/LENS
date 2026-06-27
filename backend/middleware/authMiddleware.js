@@ -66,7 +66,13 @@ const requireRestaurantOwner = verifyRole(["Restaurant Owner", "Admin"]);
 
 const userMiddleware = async (req, res, next) => {
   try {
-    const token = req.cookies.access_token;
+    let token = req.cookies.access_token;
+    if (!token && req.headers.authorization) {
+      const parts = req.headers.authorization.split(' ');
+      if (parts.length === 2 && parts[0] === 'Bearer') {
+        token = parts[1];
+      }
+    }
     if (!token) {
       return res.status(401).json({ message: "Invalid Token" });
     }
@@ -81,11 +87,17 @@ const userMiddleware = async (req, res, next) => {
 //admin
 const adminMiddleware = async (req, res, next) => {
   try {
-    const token = req.cookies.access_token;
+    let token = req.cookies.access_token;
+    if (!token && req.headers.authorization) {
+      const parts = req.headers.authorization.split(' ');
+      if (parts.length === 2 && parts[0] === 'Bearer') {
+        token = parts[1];
+      }
+    }
     if (!token) {
       return res.status(401).json({ message: "Invalid Token" });
     }
-    const decoded = jwt.verify(token, process.env.JWT);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id, { isAdmin: 1 });
     console.log(user);
     if (!user) {
@@ -104,11 +116,17 @@ const adminMiddleware = async (req, res, next) => {
 //activity organizer
 const organizerMiddleware = async (req, res, next) => {
   try {
-    const token = req.cookies.access_token;
+    let token = req.cookies.access_token;
+    if (!token && req.headers.authorization) {
+      const parts = req.headers.authorization.split(' ');
+      if (parts.length === 2 && parts[0] === 'Bearer') {
+        token = parts[1];
+      }
+    }
     if (!token) {
       return res.status(401).json({ message: "Invalid Token" });
     }
-    const decoded = jwt.verify(token, process.env.JWT);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.id, { type: 1 });
     if (!user) {
       return res.status(401).json({ message: "User not found" });

@@ -1,51 +1,68 @@
-import React, { useState, useEffect } from "react";
-import {} from "react-icons/fa";
-import useFetch from "../../hooks/useFetch";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const Searchbar = () => {
-  const today = new Date().toISOString().slice(0, 10);
-
+  const [vehicleName, setVehicleName] = useState("");
   const [vehicleType, setVehicleType] = useState("");
   const [pickupLocation, setPickupLocation] = useState("");
-
-  const [pickupDate, setPickupDate] = useState(today);
-  const [returnDate, setReturnDate] = useState(today);
-
-  const url =
-    pickupLocation && vehicleType === ""
-      ? `vehicle/location/get/${pickupLocation}`
-      : pickupLocation && vehicleType
-      ? `vehicle/get/${vehicleType}/${pickupLocation}`
-      : vehicleType === ""
-      ? "vehicle/"
-      : `vehicle/type/get/${vehicleType}`;
-
-  const { data } = useFetch(url);
-  console.log(data);
-
-  // const url2 = `vehiclereservation/`
-
-  // const {data : data2} = useFetch(url2);
-  // console.log(data2)
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (data) {
-      navigate("/vehicles", { state: data });
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    let searchUrl = "/vehicle";
+    if (vehicleName.trim()) {
+      searchUrl = `/vehicle/search/name/${vehicleName.trim()}`;
+    } else if (pickupLocation.trim() && vehicleType) {
+      searchUrl = `/vehicle/get/${vehicleType}/${pickupLocation.trim()}`;
+    } else if (pickupLocation.trim()) {
+      searchUrl = `/vehicle/location/get/${pickupLocation.trim()}`;
+    } else if (vehicleType) {
+      searchUrl = `/vehicle/type/get/${vehicleType}`;
     }
-  }, [data, navigate]);
+
+    try {
+      const res = await axios.get(searchUrl);
+      navigate("/vehicles", { state: res.data });
+    } catch (err) {
+      console.error("Vehicle search error", err);
+      Swal.fire({
+        icon: "error",
+        title: "Search Failed",
+        text: "Could not fetch vehicles. Please try again."
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className="bg-white mt-4 lg:mt-[-52px] px-8 shadow-lg max-w-[750px]  p-4 lg:text-left text-center h-full  items-center   mx-auto rounded-lg">
-      <form className="flex flex-col lg:flex-row justify-between  px-4">
-        <div className="flex flex-col">
-          <label for="vehicleType" className="py-3">
+    <div className="bg-white mt-4 lg:mt-[-52px] px-8 shadow-lg max-w-[950px] p-4 lg:text-left text-center h-full items-center mx-auto rounded-lg">
+      <form onSubmit={handleSearch} className="flex flex-col lg:flex-row justify-between px-4 items-end gap-4">
+        <div className="flex flex-col w-full lg:w-auto">
+          <label htmlFor="vehicleName" className="py-3 text-left font-semibold">
+            Vehicle Name
+          </label>
+          <input
+            type="text"
+            className="border rounded-md p-3 lg:w-[200px] w-full"
+            placeholder="e.g. Prius, Caravan"
+            value={vehicleName}
+            onChange={(e) => setVehicleName(e.target.value)}
+          />
+        </div>
+
+        <div className="flex flex-col w-full lg:w-auto">
+          <label htmlFor="vehicleType" className="py-3 text-left font-semibold">
             Vehicle Type
           </label>
           <select
-            className="p-3 border rounded-md w-full"
+            className="p-3 border rounded-md w-full lg:w-[150px]"
             value={vehicleType}
             onChange={(e) => setVehicleType(e.target.value)}
           >
@@ -60,19 +77,18 @@ const Searchbar = () => {
           </select>
         </div>
 
-        <div className="flex flex-col pl-16">
-          <label for="pickupLocation" className="py-3">
+        <div className="flex flex-col w-full lg:w-auto">
+          <label htmlFor="pickupLocation" className="py-3 text-left font-semibold">
             Pick-up Location
           </label>
           <input
             type="text"
             list="city"
-            className="border rounded-md  p-3 lg:w-[300px] w-full"
-            placeholder="Boarding"
+            className="border rounded-md p-3 lg:w-[220px] w-full"
+            placeholder="Boarding City"
             value={pickupLocation}
             onChange={(e) => setPickupLocation(e.target.value)}
-          ></input>
-
+          />
           <datalist id="city">
             <option value="Pune" />
             <option value="Nashik" />
@@ -84,22 +100,13 @@ const Searchbar = () => {
           </datalist>
         </div>
 
-        {/* <div className='flex flex-col'>
-            <label for = 'pickupDate' className='py-3'>Pick-up Date</label>
-            <input type='date' min={today} className='border rounded-md p-3 w-full' onChange={(e) => setPickupDate(e.target.value) }/>
-          </div>
-
-          <div className='flex flex-col'>
-            <label for = 'returnDate' className='py-3'>Return Date</label>
-            <input type='date' min={pickupDate} className='border rounded-md p-3 w-full' onChange={(e) => setReturnDate(e.target.value) }/>
-          </div> */}
-
-        <div className="lg:w-24  items-center w-full hidden">
+        <div className="lg:w-32 flex items-center w-full">
           <button
             type="submit"
-            className="font-bold  text-white bg-[#41A4FF]  rounded-md p-3 text-center mt-4 w-full"
+            disabled={loading}
+            className="font-bold text-white bg-[#41A4FF] hover:bg-blue-600 rounded-md p-3 text-center w-full transition duration-150"
           >
-            Search
+            {loading ? "Searching..." : "Search"}
           </button>
         </div>
       </form>

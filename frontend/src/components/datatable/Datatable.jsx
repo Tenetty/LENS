@@ -40,8 +40,15 @@ const Datatable = ({ columns, fetchPath }) => {
     if (confirmResult.isConfirmed) {
       try {
         setIsLoading(true);
-        // ✅ fixed: use fetchPath base and send credentials
-        await axios.delete(`/hotels/${id}`, { withCredentials: true });
+        // Construct the delete URL based on the route path dynamically
+        let deleteUrl = `/${path}/${id}`;
+        if (path === "train") {
+          deleteUrl = `/train/delete/${id}`;
+        }
+        if (path === "restaurants") {
+          deleteUrl = `/restaurant/${id}`;
+        }
+        await axios.delete(deleteUrl, { withCredentials: true });
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -75,24 +82,74 @@ const Datatable = ({ columns, fetchPath }) => {
     }
   };
 
+  const handleApproveUser = async (id) => {
+    try {
+      setIsLoading(true);
+      await axios.put(`/users/${id}`, { status: "APPROVED" }, { withCredentials: true });
+      setIsLoading(false);
+      setList(list.map((item) => (item._id === id ? { ...item, status: "APPROVED" } : item)));
+      Swal.fire("User Approved Successfully", "", "success");
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      Swal.fire("Error approving user", error.message, "error");
+    }
+  };
+
+  const handleDeclineUser = async (id) => {
+    try {
+      setIsLoading(true);
+      await axios.put(`/users/${id}`, { status: "DECLINED" }, { withCredentials: true });
+      setIsLoading(false);
+      setList(list.map((item) => (item._id === id ? { ...item, status: "DECLINED" } : item)));
+      Swal.fire("User Declined Successfully", "", "success");
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+      Swal.fire("Error declining user", error.message, "error");
+    }
+  };
+
   const actionColumn = [
     {
       field: "action",
       headerName: "Action",
-      width: 250,
+      width: 320,
       renderCell: (params) => {
+        const showApprovalButtons =
+          path === "users" &&
+          (params.row.role === "Hotel Manager" || params.row.role === "Vehicle Owner") &&
+          params.row.status !== "APPROVED";
+
         return (
-          <div className="cellAction">
+          <div className="cellAction flex items-center gap-2">
             <div
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded cursor-pointer"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded cursor-pointer text-xs"
               onClick={() => handleview(params.row._id)}
             >
               View
             </div>
 
+            {showApprovalButtons && (
+              <>
+                <div
+                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded cursor-pointer text-xs"
+                  onClick={() => handleApproveUser(params.row._id)}
+                >
+                  Approve
+                </div>
+                <div
+                  className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-1 px-3 rounded cursor-pointer text-xs"
+                  onClick={() => handleDeclineUser(params.row._id)}
+                >
+                  Decline
+                </div>
+              </>
+            )}
+
             <div
               onClick={() => handleDelete(params.row._id)}
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded cursor-pointer"
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded cursor-pointer text-xs"
             >
               Delete
             </div>

@@ -206,10 +206,10 @@ exports.availableVehicles = async (req, res) => {
 exports.getVehiclesByTypeAndLocation = async(req, res) => {
     const { vehicleType, location } = req.params;
     try{
-        const vehicles = await Vehicle.find({vehicleType: vehicleType, location: location});
-        if(!vehicles){
-            res.status(404).send("No vehicles found");
-        }
+        const vehicles = await Vehicle.find({
+            vehicleType: vehicleType,
+            location: { $regex: location, $options: "i" }
+        });
         res.send(vehicles);
     }catch(err){
         res.status(500).send(err.message);
@@ -222,9 +222,6 @@ exports.getVehicleByType = async (req, res) => {
     const {vehicleType} = req.params;
     try{
         const vehicles = await Vehicle.find({vehicleType: vehicleType});
-        if(!vehicles){
-            res.status(404).send("No vehicles found");
-        }
         res.send(vehicles);
     }catch(err){
         res.status(500).send(err.message);
@@ -235,12 +232,27 @@ exports.getVehicleByType = async (req, res) => {
 exports.getVehicleByLocation = async (req, res) => {
     const {location} = req.params;
     try{
-        const vehicles = await Vehicle.find({location: location});
-        if(!vehicles){
-            res.status(404).send("No vehicles found");
-        }
+        const vehicles = await Vehicle.find({
+            location: { $regex: location, $options: "i" }
+        });
         res.send(vehicles);
     }catch(err){
+        res.status(500).send(err.message);
+    }
+}
+
+//retrieve vehicles by brand or model name
+exports.getVehiclesByName = async (req, res) => {
+    const { name } = req.params;
+    try {
+        const vehicles = await Vehicle.find({
+            $or: [
+                { brand: { $regex: name, $options: "i" } },
+                { model: { $regex: name, $options: "i" } }
+            ]
+        });
+        res.send(vehicles);
+    } catch(err) {
         res.status(500).send(err.message);
     }
 }

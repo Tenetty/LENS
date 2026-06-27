@@ -20,28 +20,39 @@ export const userColumns = [
   {
     field: "name",
     headerName: "Name",
-    width: 200,
+    width: 150,
   },
   {
     field: "email",
     headerName: "Email",
-    width: 300,
+    width: 220,
   },
-
   {
     field: "mobile",
     headerName: "Mobile",
-    width: 150,
+    width: 130,
   },
   {
     field: "country",
     headerName: "Country",
-    width: 150,
+    width: 100,
   },
   {
-    field: "type",
-    headerName: "Type",
-    width: 150,
+    field: "role",
+    headerName: "Role",
+    width: 130,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 120,
+    renderCell: (params) => {
+      return (
+        <span className={`statusCell ${params.row.status || "APPROVED"}`}>
+          {params.row.status || "APPROVED"}
+        </span>
+      );
+    },
   },
 ];
 
@@ -374,5 +385,71 @@ export const trainColumns = [
     field: "price",
     headerName: "Price",
     width: 100,
+  },
+];
+
+export const resturentColumns = [
+  {
+    field: "Image",
+    headerName: "Image",
+    width: 70,
+    renderCell: (params) => {
+      return (
+        <div className="cellWithImg">
+          <img
+            className="cellImg"
+            src={
+              params.row.resturentImages && params.row.resturentImages.length > 0
+                ? params.row.resturentImages[0].startsWith("http")
+                  ? params.row.resturentImages[0]
+                  : `restaurants/images/${params.row.resturentImages[0]}`
+                : "https://i.ibb.co/MBtjqXQ/no-avatar.gif"
+            }
+            alt="avatar"
+          />
+        </div>
+      );
+    },
+  },
+  {
+    field: "name",
+    headerName: "Name",
+    width: 200,
+  },
+  {
+    field: "district",
+    headerName: "District",
+    width: 130,
+    renderCell: (params) => {
+      return <span>{params.row.district ? params.row.district.name : ""}</span>;
+    },
+  },
+  {
+    field: "returentType",
+    headerName: "Type",
+    width: 150,
+    renderCell: (params) => {
+      return <span>{params.row.returentType ? params.row.returentType.name : ""}</span>;
+    },
+  },
+  {
+    field: "pricePerHour",
+    headerName: "Price/Hour",
+    width: 100,
+  },
+  {
+    field: "tableCount",
+    headerName: "Tables",
+    width: 80,
+  },
+  {
+    field: "mobileNo",
+    headerName: "Mobile",
+    width: 150,
+  },
+  {
+    field: "status",
+    headerName: "Status",
+    width: 120,
   },
 ];

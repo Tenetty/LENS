@@ -46,6 +46,29 @@ const UserSchema = new mongoose.Schema(
       default:
         "https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg",
     },
+    hotelName: {
+      type: String,
+    },
+    hotelAddress: {
+      type: String,
+    },
+    hotelExperience: {
+      type: String,
+    },
+    vehicleNumber: {
+      type: String,
+    },
+    vehicleType: {
+      type: String,
+    },
+    licenseNumber: {
+      type: String,
+    },
+    status: {
+      type: String,
+      enum: ["APPROVED", "PENDING", "DECLINED"],
+      default: "APPROVED",
+    },
   },
   { timestamps: true }
 );

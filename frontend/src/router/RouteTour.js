@@ -24,7 +24,9 @@ import {
   userColumns,
   vehicleColumns,
   vehicleReservationColumns,
+  resturentColumns,
 } from "../components/datatable/datatablesource";
+import Resturentslist from "../pages/Resturentslist";
 import Vehiclelist from "../pages/Vehiclelist";
 import Activity from "../pages/special_activity/Activity";
 import PendingActivities from "../pages/special_activity/PendingActivities";
@@ -79,6 +81,7 @@ import ReviewPanel from "../pages/train/ReviewPanel";
 import MyTickets from "../pages/train/MyTickets";
 import MyOneTicket from "../pages/train/MyOneTicket";
 import TravelerHome from "../pages/train/TravelerHome";
+import AddAdmin from "../pages/AddAdmin";
 
 import { Main } from "../pages/Main";
 import Refund from "../components/Refund";
@@ -122,6 +125,14 @@ const RouteTour = () => {
         element={
           <AdminRoute>
             <Admin />
+          </AdminRoute>
+        }
+      />
+      <Route
+        path="/admin/add-admin"
+        element={
+          <AdminRoute>
+            <AddAdmin />
           </AdminRoute>
         }
       />
@@ -196,6 +207,14 @@ const RouteTour = () => {
         element={
           <ProtectedRoute>
             <Vehiclelist columns={vehicleColumns} />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/restaurants"
+        element={
+          <ProtectedRoute>
+            <Resturentslist columns={resturentColumns} />
           </ProtectedRoute>
         }
       />

@@ -75,4 +75,25 @@
         cursor: pointer;
       }
     }
+
+    .statusCell {
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: capitalize;
+
+      &.APPROVED {
+        background-color: rgba(0, 128, 0, 0.15);
+        color: green;
+      }
+      &.PENDING {
+        background-color: rgba(255, 165, 0, 0.15);
+        color: orange;
+      }
+      &.DECLINED {
+        background-color: rgba(255, 0, 0, 0.15);
+        color: crimson;
+      }
+    }
   }

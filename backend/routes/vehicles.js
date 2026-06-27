@@ -35,6 +35,9 @@ router
         .route("/location/get/:location")
         .get(vehicleController.getVehicleByLocation) //get all vehicles by location - vehicle admin postman tested
         
+router
+        .route("/search/name/:name")
+        .get(vehicleController.getVehiclesByName) //get vehicles by brand or model
 
 //tested by using postman. all routes working well.
 

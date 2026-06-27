@@ -19,6 +19,13 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
+  const [hotelName, setHotelName] = useState("");
+  const [hotelAddress, setHotelAddress] = useState("");
+  const [hotelExperience, setHotelExperience] = useState("");
+  const [vehicleType, setVehicleType] = useState("");
+  const [vehicleNumber, setVehicleNumber] = useState("");
+  const [licenseNumber, setLicenseNumber] = useState("");
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -68,6 +75,19 @@ const Register = () => {
       return;
     }
 
+    if (role === "Hotel Manager") {
+      if (!hotelName || !hotelAddress || !hotelExperience) {
+        Swal.fire("Oops...", "Please fill in all hotel manager requirements!", "error");
+        return;
+      }
+    }
+    if (role === "Vehicle Owner") {
+      if (!vehicleType || !vehicleNumber || !licenseNumber) {
+        Swal.fire("Oops...", "Please fill in all vehicle owner requirements!", "error");
+        return;
+      }
+    }
+
     setLoading2(true);
 
     try {
@@ -87,6 +107,11 @@ const Register = () => {
       data.append("file", file);
       data.append("upload_preset", "upload");
 
+      const isPendingRole = role === "Hotel Manager" || role === "Vehicle Owner";
+      const successMsg = isPendingRole
+        ? "Signup Request Submitted! You will be able to login once the Admin approves your account."
+        : "Congratulations! You Have Successfully Registered with LENS";
+
       if (file) {
         const uploadRes = await axios.post(
           "https://api.cloudinary.com/v1_1/dpgelkpd4/image/upload",
@@ -103,13 +128,15 @@ const Register = () => {
           role,
           password,
           img: url,
+          hotelName,
+          hotelAddress,
+          hotelExperience,
+          vehicleType,
+          vehicleNumber,
+          licenseNumber,
         });
 
-        Swal.fire(
-          "Congratulations! You Have Successfully Registered with LENS",
-          "",
-          "success"
-        );
+        Swal.fire(successMsg, "", "success");
         navigate("/login");
       } else {
         const response = await axios.post("auth/register", {
@@ -119,13 +146,15 @@ const Register = () => {
           country,
           role,
           password,
+          hotelName,
+          hotelAddress,
+          hotelExperience,
+          vehicleType,
+          vehicleNumber,
+          licenseNumber,
         });
 
-        Swal.fire(
-          "Congratulations! You Have Successfully Registered with LENS",
-          "",
-          "success"
-        );
+        Swal.fire(successMsg, "", "success");
         navigate("/login");
       }
 
@@ -249,7 +278,6 @@ const Register = () => {
                   <option value="Hotel Manager">Hotel Manager</option>
                   <option value="Vehicle Owner">Vehicle Owner</option>
                   <option value="Restaurant Owner">Restaurant Owner</option>
-                  <option value="Admin">Admin</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                   <svg
@@ -262,6 +290,75 @@ const Register = () => {
                 </div>
               </div>
             </div>
+            {role === "Hotel Manager" && (
+              <>
+                <div className="mb-6">
+                  <input
+                    placeholder="Hotel Name"
+                    type="text"
+                    id="hotelName"
+                    value={hotelName}
+                    onChange={(e) => setHotelName(e.target.value)}
+                    className="bordder-[#E9EDF4] w-full rounded-3xl border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none focus:ring focus:border-[#41A4FF]"
+                  />
+                </div>
+                <div className="mb-6">
+                  <input
+                    placeholder="Hotel Address"
+                    type="text"
+                    id="hotelAddress"
+                    value={hotelAddress}
+                    onChange={(e) => setHotelAddress(e.target.value)}
+                    className="bordder-[#E9EDF4] w-full rounded-3xl border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none focus:ring focus:border-[#41A4FF]"
+                  />
+                </div>
+                <div className="mb-6">
+                  <input
+                    placeholder="Years of Hospitality Experience"
+                    type="text"
+                    id="hotelExperience"
+                    value={hotelExperience}
+                    onChange={(e) => setHotelExperience(e.target.value)}
+                    className="bordder-[#E9EDF4] w-full rounded-3xl border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none focus:ring focus:border-[#41A4FF]"
+                  />
+                </div>
+              </>
+            )}
+
+            {role === "Vehicle Owner" && (
+              <>
+                <div className="mb-6">
+                  <input
+                    placeholder="Vehicle Type (e.g. Car, Van, Bus)"
+                    type="text"
+                    id="vehicleType"
+                    value={vehicleType}
+                    onChange={(e) => setVehicleType(e.target.value)}
+                    className="bordder-[#E9EDF4] w-full rounded-3xl border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none focus:ring focus:border-[#41A4FF]"
+                  />
+                </div>
+                <div className="mb-6">
+                  <input
+                    placeholder="Vehicle Number Plate"
+                    type="text"
+                    id="vehicleNumber"
+                    value={vehicleNumber}
+                    onChange={(e) => setVehicleNumber(e.target.value)}
+                    className="bordder-[#E9EDF4] w-full rounded-3xl border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none focus:ring focus:border-[#41A4FF]"
+                  />
+                </div>
+                <div className="mb-6">
+                  <input
+                    placeholder="Driving License Number"
+                    type="text"
+                    id="licenseNumber"
+                    value={licenseNumber}
+                    onChange={(e) => setLicenseNumber(e.target.value)}
+                    className="bordder-[#E9EDF4] w-full rounded-3xl border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none focus:ring focus:border-[#41A4FF]"
+                  />
+                </div>
+              </>
+            )}
             <div className="mb-6">
               <input
                 placeholder="Password"

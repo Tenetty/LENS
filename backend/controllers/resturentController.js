@@ -58,9 +58,29 @@ const findFirstFiveResturents = async (req, res, next) => {
     }
 };
 
+const getAllResturents = async (req, res, next) => {
+    try {
+        const resturents = await Resturent.find().populate('district').populate('user').populate('returentType');
+        res.status(200).json(resturents);
+    } catch (err) {
+        next(err);
+    }
+};
+
+const deleteResturent = async (req, res, next) => {
+    try {
+        await Resturent.findByIdAndDelete(req.params.id);
+        res.status(200).json("Restaurant has been deleted.");
+    } catch (err) {
+        next(err);
+    }
+};
+
 module.exports = {
     createResturent,
     findResturentByName,
     findFirstFiveResturents,
-    findResturentById
+    findResturentById,
+    getAllResturents,
+    deleteResturent
 };

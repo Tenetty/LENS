@@ -65,7 +65,7 @@ const Hotellist = ({ columns }) => {
           <Link to="/hotels/new" className="bg-blue-500 hover:bg-blue-700 text-center text-white font-bold py-2 px-4 rounded cursor-pointer lg:mt-0 mt-3">
             Add Hotel
           </Link>
-          <Link className="bg-gray-800 hover:bg-gray-600 text-center text-white font-bold py-2 px-4 rounded cursor-pointer lg:mt-0 mt-3">
+          <Link to="/hotels/bookings" className="bg-gray-800 hover:bg-gray-600 text-center text-white font-bold py-2 px-4 rounded cursor-pointer lg:mt-0 mt-3">
             Hotel Reservations
           </Link>
         </div>

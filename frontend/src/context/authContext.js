@@ -50,9 +50,9 @@ export const AuthContextProvider = ({ children }) => {
   const logout = () => {
     sessionStorage.removeItem("user"); // remove the user from sessionStorage
     sessionStorage.removeItem("access_token"); // remove the JWT token
-    axios.get("/api/logout").then(() => {
-      // make a request to your backend to clear cookies and session
-      dispatch({ type: "LOGOUT" }); // update the state to clear the user
+    dispatch({ type: "LOGOUT" }); // update the state to clear the user immediately
+    axios.post("/auth/logout").catch((err) => {
+      console.error("Backend logout clean failed:", err);
     });
   };
 

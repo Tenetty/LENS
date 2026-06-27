@@ -83,7 +83,6 @@ const categories = [
   { name: "Hotel Reservation", icon: <FaHotel /> },
   { name: "Tour Package Reservation", icon: <MdTour /> },
   { name: "Vehicle Reservation", icon: <AiFillCar /> },
-  { name: "Train Reservation", icon: <FaTrain /> },
   { name: "Restaurant Reservation", icon: <BiRestaurant /> },
   { name: "Event Reservation", icon: <BsCalendarEvent /> },
 ];

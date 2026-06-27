@@ -127,12 +127,12 @@ const getMyActivities = async (req, res) => {
 const getPendingActivities = async (req, res) => {
   const { page = 1, limit = 100 } = req.query;
   try {
-    const activities = await SpecialActivity.find()
+    const activities = await SpecialActivity.find({ status: 'PENDING' })
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();
 
-    const count = await SpecialActivity.countDocuments();
+    const count = await SpecialActivity.countDocuments({ status: 'PENDING' });
 
     res.status(200).json({
       success: true,
@@ -151,12 +151,8 @@ const getPendingActivities = async (req, res) => {
 const declineActivity = async (req, res) => {
   try {
     const activityId = req.params.id;
-    const updatedActivity = await SpecialActivity.findByIdAndUpdate(
-      activityId,
-      { $set: { status: 'DECLINED' } },
-      { new: true }
-    );
-    res.status(200).json({ success: true, activity: updatedActivity });
+    const deletedActivity = await SpecialActivity.findByIdAndDelete(activityId);
+    res.status(200).json({ success: true, activity: deletedActivity });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal server error' });

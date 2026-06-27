@@ -23,16 +23,62 @@ const verifyToken = (token) => {
 // @access  Public
 const registerUser = async (req, res, next) => {
   try {
+    // Prevent registering as an Admin publicly
+    if (req.body.role === "Admin" || req.body.isAdmin === true || req.body.isAdmin === "true") {
+      return res.status(400).json({ message: "Admin registration is not allowed through this signup page." });
+    }
+
     var salt = await bcrypt.genSaltSync(10);
     var hash = await bcrypt.hashSync(req.body.password, salt);
+
+    const isPendingRole = req.body.role === "Hotel Manager" || req.body.role === "Vehicle Owner";
 
     const newUser = new User({
       ...req.body,
       password: hash,
+      role: req.body.role || "Tourist",
+      isAdmin: false, // Force isAdmin to false for public registration
+      status: isPendingRole ? "PENDING" : "APPROVED",
     });
 
     await newUser.save();
     res.status(200).send("User created successfully");
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Register new Admin
+// @route   POST /api/auth/register-admin
+// @access  Private (Admin only)
+const registerAdmin = async (req, res, next) => {
+  try {
+    const { name, email, mobile, country, password } = req.body;
+    
+    if (!name || !email || !mobile || !password) {
+      return res.status(400).json({ message: "Missing required fields for admin registration." });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ message: "User with this email already exists." });
+    }
+
+    var salt = await bcrypt.genSaltSync(10);
+    var hash = await bcrypt.hashSync(password, salt);
+
+    const newAdmin = new User({
+      name,
+      email,
+      mobile,
+      country,
+      password: hash,
+      role: "Admin",
+      isAdmin: true,
+    });
+
+    await newAdmin.save();
+    res.status(200).send("Admin user created successfully");
   } catch (error) {
     next(error);
   }
@@ -52,6 +98,15 @@ const loginUser = async (req, res, next) => {
 
     if (!isMatch) {
       return res.status(404).send("wrong password");
+    }
+
+    if (user.role === "Hotel Manager" || user.role === "Vehicle Owner") {
+      if (user.status === "PENDING") {
+        return res.status(403).send("Your registration is pending approval by the Admin.");
+      }
+      if (user.status === "DECLINED") {
+        return res.status(403).send("Your registration has been declined by the Admin.");
+      }
     }
 
     //create the token
@@ -78,7 +133,9 @@ const loginUser = async (req, res, next) => {
 // @access  Private
 const logoutUser = (req, res) => {
   res.clearCookie("access_token"); // clear the access_token cookie
-  req.session.destroy(); // destroy the session
+  if (req.session) {
+    req.session.destroy(); // destroy the session
+  }
   res.status(200).send("Logged out successfully"); // send a response to the client
 };
 
@@ -165,6 +222,7 @@ const checkEmailExists = async (req, res, next) => {
 
 module.exports = {
   registerUser,
+  registerAdmin,
   loginUser,
   logoutUser,
   resetpasswordrequest,

@@ -21,21 +21,24 @@ const verifyToken = (req, res, next) => {
 };
 
 const verifyUser = (req, res, next) => {
-  verifyToken(req, res, next, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
+  verifyToken(req, res, (err) => {
+    if (err) return next(err);
+    const userId = req.user.id || req.user._id;
+    if (userId === req.params.id || req.user.isAdmin || req.user.role === "Admin") {
       next();
     } else {
-      res.status(403).json({ message: "You are not allowed to do that" });
+      return res.status(403).json({ message: "You are not allowed to do that" });
     }
   });
 };
 
 const verifyAdmin = (req, res, next) => {
-  verifyToken(req, res, next, () => {
-    if (req.user.isAdmin) {
+  verifyToken(req, res, (err) => {
+    if (err) return next(err);
+    if (req.user.isAdmin || req.user.role === "Admin") {
       next();
     } else {
-      res.status(403).json({ message: "You are not allowed to do that" });
+      return res.status(403).json({ message: "You are not allowed to do that" });
     }
   });
 };

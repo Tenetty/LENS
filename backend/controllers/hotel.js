@@ -304,10 +304,10 @@ const getHotelbyCity = async (req, res) => {
   const city = req.params.city;
   console.log(city);
   try {
-    const hotels = await Hotel.find({ city: city, isApproved: true });
-    if (!hotels) {
-      res.status(404).send("No hotels found");
-    }
+    const hotels = await Hotel.find({
+      city: { $regex: city, $options: "i" },
+      isApproved: true
+    });
     console.log(hotels);
     res.send(hotels);
   } catch (err) {

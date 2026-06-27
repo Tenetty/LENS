@@ -4,6 +4,7 @@ const {
   deleteUser,
   getUser,
   getAllUsers,
+  getAdminStats,
 } = require("../controllers/userController");
 const {
   verifyToken,
@@ -19,6 +20,8 @@ const {
 const { protect } = require("../middleware/verifyToken");
 
 const router = express.Router();
+
+router.get("/admin/stats", verifyAdmin, getAdminStats);
 
 router.get("/checkauthentication", verifyToken, (req, res, next) => {
   res.status(200).json({ message: "Authenticated" });

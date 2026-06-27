@@ -21,17 +21,13 @@ const inside_nav = [
     path: "/vehicles",
     display: "Vehicles",
   },
-  // {
-  //   path: "/Restaurants",
-  //   display: "Restaurants",
-  // },
+  {
+    path: "/restaurants",
+    display: "Restaurants",
+  },
   {
     path: "/events",
     display: "Events",
-  },
-  {
-    path: "/TrainHome",
-    display: "Trains",
   },
 ];
 
