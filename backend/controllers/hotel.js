@@ -346,7 +346,28 @@ const approveHotel = async (req, res, next) => {
       req.params.id,
       { isApproved: true },
       { new: true }
-    );
+    ).populate("owner");
+
+    if (updatedHotel && updatedHotel.owner && updatedHotel.owner.email) {
+      const sendEmail = require("../utils/sendEmail");
+      const emailText = `Hello ${updatedHotel.owner.name || "Hotel Partner"},\n\nWe are pleased to inform you that your hotel listing "${updatedHotel.name}" has been reviewed and APPROVED by our administrator.\n\nIt is now live on our platform and users can begin booking stays.\n\nThank you for partnering with LENS!\n\nBest regards,\nLENS Administration Team`;
+      
+      const emailHtml = `
+        <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; color: #333;">
+          <h2 style="color: #2b6cb0;">Congratulations!</h2>
+          <p>Hello <strong>${updatedHotel.owner.name || "Hotel Partner"}</strong>,</p>
+          <p>We are pleased to inform you that your hotel listing "<strong>${updatedHotel.name}</strong>" has been reviewed and <strong>APPROVED</strong> by our administrator.</p>
+          <p>It is now live on our platform and users can begin booking stays.</p>
+          <br>
+          <p>Thank you for partnering with LENS!</p>
+          <p>Best regards,<br><strong>LENS Administration Team</strong></p>
+        </div>
+      `;
+
+      sendEmail(updatedHotel.owner.email, `Hotel Listing Approved - ${updatedHotel.name}`, emailText, emailHtml)
+        .catch(err => console.error("Failed to send hotel approval email:", err));
+    }
+
     res.status(200).json(updatedHotel);
   } catch (err) {
     next(err);

@@ -112,14 +112,32 @@ exports.acceptVehicle = async(req, res) => {
     try{
         const vehicle = await Vehicle.findById(id);
         if(!vehicle){
-            res.status(404).send("Vehicle not found");
+            return res.status(404).send("Vehicle not found");
         }
 
-        const accept = await Vehicle.findByIdAndUpdate(id, {isAccepted: true, isApproved: true}, {new: true});
-        res.send(accept);
+        const accept = await Vehicle.findByIdAndUpdate(id, {isAccepted: true, isApproved: true}, {new: true}).populate("owner");
 
-        // Return success message
-        return "Vehicle accepted successfully!";
+        if (accept && accept.owner && accept.owner.email) {
+            const sendEmail = require("../utils/sendEmail");
+            const emailText = `Hello ${accept.owner.name || "Vehicle Owner"},\n\nWe are pleased to inform you that your vehicle listing "${accept.brand} ${accept.model}" has been reviewed and APPROVED by our administrator.\n\nIt is now live on our platform and users can begin booking it.\n\nThank you for partnering with LENS!\n\nBest regards,\nLENS Administration Team`;
+            
+            const emailHtml = `
+              <div style="font-family: Arial, sans-serif; padding: 20px; line-height: 1.6; color: #333;">
+                <h2 style="color: #2b6cb0;">Congratulations!</h2>
+                <p>Hello <strong>${accept.owner.name || "Vehicle Owner"}</strong>,</p>
+                <p>We are pleased to inform you that your vehicle listing "<strong>${accept.brand} ${accept.model}</strong>" has been reviewed and <strong>APPROVED</strong> by our administrator.</p>
+                <p>It is now live on our platform and users can begin booking it.</p>
+                <br>
+                <p>Thank you for partnering with LENS!</p>
+                <p>Best regards,<br><strong>LENS Administration Team</strong></p>
+              </div>
+            `;
+
+            sendEmail(accept.owner.email, `Vehicle Listing Approved - ${accept.brand} ${accept.model}`, emailText, emailHtml)
+              .catch(err => console.error("Failed to send vehicle approval email:", err));
+        }
+
+        res.send(accept);
 
   }catch(err){
       res.status(500).send(err.message);
