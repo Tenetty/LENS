@@ -91,12 +91,7 @@ const HiddenPlaces = () => {
         <div class="text-xl">
           <p className="font-extrabold text-2xl mb-3">Nashik</p>
           <p>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sunt
-            fugiat cupiditate quas vitae, ducimus saepe quos voluptatibus,
-            accusantium qui voluptates earum voluptatum. Consequuntur alias
-            beatae laborum neque quisquam, quae sit, inventore maxime sed
-            eligendi aliquid a cum voluptatum nostrum deleniti cumque minima ab
-            ullam impedit eveniet nulla sequi quis odit?
+            Nashik is an ancient holy city in Maharashtra, India, famous for its association with the Ramayana epic. Situated on the banks of the Godavari River, it is known for hosting the Kumbh Mela, its rich historical temples like Panchavati, and its modern reputation as the Wine Capital of India.
           </p>
         </div>
       </div>
