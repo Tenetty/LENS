@@ -200,11 +200,6 @@ const TourDetails = () => {
                   </svg>
                   Check FAQ
                 </button>
-
-                <div className="mt-8">
-                  <h3 className="font-bold text-xl mb-4">Tour Route Map</h3>
-                  <Map city={allTours.cities} popupText={allTours.name} />
-                </div>
               </div>
             </div>
           </div>

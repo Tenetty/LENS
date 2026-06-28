@@ -30,9 +30,17 @@ export const HotelHome = () => {
       
         
       ))}
-      <h1 className="ml-10 mt-5  md:text-2xl  font-bold   text-[#272727]">
-        Hotels guests love
-      </h1>
+      <div className="flex justify-between items-center px-10 mt-8 mb-4">
+        <h1 className="md:text-2xl font-bold text-[#272727]">
+          Hotels guests love
+        </h1>
+        <Link
+          to="/hotels/map"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2.5 px-5 rounded-xl transition duration-200 shadow-md flex items-center gap-2 text-sm"
+        >
+          🗺️ View all on Map
+        </Link>
+      </div>
       <HotelCard />
       
     </div>

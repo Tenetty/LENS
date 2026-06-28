@@ -54,6 +54,7 @@ import { HotelHome } from "../pages/hotel/HotelHome";
 import AddHotel from "../pages/hotel/AddHotel";
 import { AddRoom } from "../pages/hotel/AddRoom";
 import UpdateHotel from "../pages/hotel/UpdateHotel";
+import HotelMapPage from "../pages/hotel/HotelMapPage";
 import AddVehicle from "../pages/vehicle/AddVehicle";
 import EditVehicle from "../pages/vehicle/EditVehicle";
 import HotelView from "../components/hotel/HotelView";
@@ -308,6 +309,7 @@ const RouteTour = () => {
       />
 
       <Route path="/hotelhome" element={<HotelHome />} />
+      <Route path="/hotels/map" element={<HotelMapPage />} />
       <Route path="/hotels/new" element={<AddHotel />} />
       <Route path="/hotels/bookings" element={<HotelManagerBookings />} />
       <Route path="/rooms/new/:id" element={<AddRoom />} />

@@ -90,11 +90,6 @@ const checkOutDate = new Date(date.checkOutDate);
               <h1 className="px-4">{data.city}</h1>
             </div>
 
-            <div className="mt-4">
-              <h3 className="font-bold text-lg text-gray-800">Location Map</h3>
-              <Map city={data.city} popupText={`${data.name}, ${data.city}`} />
-            </div>
-
             <div className="flex flex-col md:flex-row">
               <div className="flex items-center">
                 <h1 className="font-bold">checkIn Date :</h1>
