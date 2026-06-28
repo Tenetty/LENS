@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import HotelReserve from "./HotelReserve";
 import { BACKEND_URL } from "../../config";
+import Map from "../Map";
 
 const HotelView = () => {
 
@@ -87,6 +88,11 @@ const checkOutDate = new Date(date.checkOutDate);
             <div className="flex items-center">
               <h1 className="font-bold py-5">City : </h1>
               <h1 className="px-4">{data.city}</h1>
+            </div>
+
+            <div className="mt-4">
+              <h3 className="font-bold text-lg text-gray-800">Location Map</h3>
+              <Map city={data.city} popupText={`${data.name}, ${data.city}`} />
             </div>
 
             <div className="flex flex-col md:flex-row">

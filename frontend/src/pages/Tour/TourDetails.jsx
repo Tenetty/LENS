@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import HeroTour from "./HeroTour";
 import TourNav from "../../components/navbar/TourNav";
+import Map from "../../components/Map";
 import { AiFillStar } from "react-icons/ai";
 import { Stepper, initTE, Ripple, Input, Datepicker } from "tw-elements";
 import DaysShow from "../../components/Tour/DaysShow";
@@ -199,6 +200,11 @@ const TourDetails = () => {
                   </svg>
                   Check FAQ
                 </button>
+
+                <div className="mt-8">
+                  <h3 className="font-bold text-xl mb-4">Tour Route Map</h3>
+                  <Map city={allTours.cities} popupText={allTours.name} />
+                </div>
               </div>
             </div>
           </div>
