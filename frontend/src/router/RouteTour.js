@@ -10,6 +10,7 @@ import Register from "../pages/Register";
 import Userlist from "../pages/Userlist";
 import ToursHome from "../pages/Tour/Home";
 import TourDetails from "../pages/Tour/TourDetails";
+import TourPayment from "../pages/Tour/TourPayment";
 import TourView from "../pages/Tour/Admin/ViewTour";
 import UpdateTour from "../pages/Tour/Admin/updateAddedTour";
 import SearchResults from "../pages/Tour/SerachResults";
@@ -250,6 +251,7 @@ const RouteTour = () => {
 
       <Route path="/tours/home" element={<ToursHome />} />
       <Route path="/tours/:id" element={<TourDetails />} />
+      <Route path="/tours/payment" element={<TourPayment />} />
       <Route
         path="/tours/search/:destination/:duration/:maxsize"
         element={<SearchResults />}

@@ -101,64 +101,31 @@ const HotelReserve = ({setOpen,hotelId,checkInDate,checkOutDate,date_difference}
   };
 
 
-  function sendData() {
-
-    const newReservation = {
-      hotelId,
-      hotelName,
-      roomType: selectedRooms.length > 0 ? "Room Selection" : "General Booking",
-      checkInDate,
-      checkOutDate,
-      userName,
-      userId: user._id,
-      totalPrice,
-      totalDays
-    };
-
-    axios
-      .post(`/hotelreservation/reservation`, newReservation)
-
-      .then(() => {
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Rooms reserved Successfully',
-          showConfirmButton: false,
-          timer: 2000
-        }) 
-      })
-      .catch((err) => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
-          footer: err.message || err
-        })
+  const handleClick = () => {
+    if (selectedRooms.length === 0) {
+      Swal.fire({
+        icon: "warning",
+        title: "No rooms selected",
+        text: "Please select at least one room to proceed.",
       });
-     
-  }
-
-  
-
-  const handleClick = async () => {
-    try {
-      if (selectedRooms.length > 0) {
-        await Promise.all(
-          selectedRooms.map((roomId) => {
-            const res = axios.put(`/rooms/availability/${roomId}`, {
-              dates: alldates,
-            });
-            return res.data;
-          })
-        );
-      }
-
-      sendData();
-      setOpen(false);
-      navigate("/hotelhome");
-    } catch (err) {
-      console.error("Reservation error:", err);
+      return;
     }
+    navigate("/hotelbooking", {
+      state: {
+        hotelId,
+        hotelName,
+        roomType: "Room Selection",
+        checkInDate,
+        checkOutDate,
+        userName,
+        userId: user._id,
+        totalPrice,
+        totalDays,
+        selectedRooms,
+        alldates
+      }
+    });
+    setOpen(false);
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import HeroTour from "./HeroTour";
 import TourNav from "../../components/navbar/TourNav";
 import { AiFillStar } from "react-icons/ai";
@@ -12,6 +12,7 @@ import axios from "axios";
 
 const TourDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [firstName, setFname] = useState("");
   const [lastName, setLname] = useState("");
@@ -79,33 +80,14 @@ const TourDetails = () => {
       date,
       phone,
       guestCount,
+      tourId: allTours._id,
+      tourName: allTours.name,
+      totalPrice: allTours.price * Number(guestCount)
     };
 
-    try {
-      const result = await Swal.fire({
-        title: "Do you want to Book this tour?",
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: "Book",
-        denyButtonText: `Don't Book`,
-      });
-
-      if (result.isConfirmed) {
-        const response = await axios.post(
-          "/tours/tourReservations",
-          tourReservation
-        );
-        Swal.fire(response.data.message, "", "success");
-      } else if (result.isDenied) {
-        Swal.fire("Tour Booking Cancelled", "", "error");
-      }
-    } catch (err) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: err.message,
-      });
-    }
+    navigate("/tours/payment", {
+      state: tourReservation
+    });
   };
 
   return (

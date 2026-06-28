@@ -4,36 +4,34 @@ import { FaLock, FaCreditCard, FaQrcode } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
-const HotelBook = () => {
+const TourPayment = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
   // Extract reservation data passed from state
   const {
-    hotelId,
-    hotelName,
-    roomType,
-    checkInDate,
-    checkOutDate,
-    userName,
-    userId,
-    totalPrice,
-    totalDays,
-    selectedRooms,
-    alldates
+    currentUser,
+    firstName,
+    lastName,
+    date,
+    phone,
+    guestCount,
+    tourId,
+    tourName,
+    totalPrice
   } = location.state ?? {};
 
   // Redirect if no reservation data is present (direct URL access)
   useEffect(() => {
-    if (!userId) {
+    if (!currentUser) {
       Swal.fire({
         icon: 'error',
         title: 'Access Denied',
-        text: 'Please select a hotel and dates before paying.',
+        text: 'Please fill in tour details before paying.',
       });
-      navigate('/hotelhome');
+      navigate('/tours/home');
     }
-  }, [userId, navigate]);
+  }, [currentUser, navigate]);
 
   // States for payment selections and inputs
   const [paymentMethod, setPaymentMethod] = useState('card');
@@ -48,7 +46,7 @@ const HotelBook = () => {
   // QR Code Inputs
   const [transactionId, setTransactionId] = useState('');
 
-  if (!userId) return null;
+  if (!currentUser) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,8 +69,8 @@ const HotelBook = () => {
       }
     }
 
-    setLoading(false);
-    
+    setLoading(true);
+
     // Show Processing loader
     Swal.fire({
       title: paymentMethod === 'card' ? 'Processing secure card payment...' : 'Verifying transaction reference...',
@@ -85,46 +83,32 @@ const HotelBook = () => {
     // Simulate Payment Gateway Response Delay
     setTimeout(async () => {
       try {
-        // 2. Lock Room Availability in Database
-        if (selectedRooms && selectedRooms.length > 0) {
-          await Promise.all(
-            selectedRooms.map((roomId) => {
-              return axios.put(`/rooms/availability/${roomId}`, {
-                dates: alldates,
-              });
-            })
-          );
-        }
-
-        // 3. Create Reservation Record in DB
+        // 2. Create Tour Reservation Record in DB
         const newReservation = {
-          hotelId,
-          hotelName,
-          roomType,
-          checkInDate,
-          checkOutDate,
-          userName,
-          userId,
-          totalPrice,
-          totalDays
+          currentUser,
+          firstName,
+          lastName,
+          date,
+          phone,
+          guestCount
         };
 
-        await axios.post(`/hotelreservation/reservation`, newReservation);
+        const response = await axios.post("/tours/tourReservations", newReservation);
 
-        // 4. Close loading and show success
+        // 3. Close loading and show success
         Swal.close();
         Swal.fire({
           icon: 'success',
-          title: 'Rooms Reserved successfully',
-          text: 'Your payment was processed and booking is complete!',
+          title: 'Tour Booked Successfully',
+          text: response.data.message || 'Your payment was processed and booking is complete!',
           confirmButtonColor: '#3085d6',
         }).then(() => {
-          navigate('/hotelhome');
+          navigate('/tours/home');
         });
 
       } catch (err) {
         Swal.close();
-        console.error("Booking failed:", err);
+        console.error("Tour booking failed:", err);
         Swal.fire('Error', err.response?.data?.message || 'Something went wrong during reservation.', 'error');
       }
     }, 1500);
@@ -133,8 +117,8 @@ const HotelBook = () => {
   return (
     <div className='lg:p-24 p-6 max-w-7xl mx-auto'>
       <div className='mb-8'>
-        <h1 className='text-3xl font-extrabold text-gray-900'>Secure Hotel Checkout</h1>
-        <p className='text-gray-500 mt-1'>Complete your payment to confirm your booking at {hotelName}</p>
+        <h1 className='text-3xl font-extrabold text-gray-900'>Secure Tour Checkout</h1>
+        <p className='text-gray-500 mt-1'>Complete your payment to confirm your booking for {tourName}</p>
       </div>
 
       <div className='flex flex-col lg:flex-row gap-12'>
@@ -183,7 +167,6 @@ const HotelBook = () => {
                     placeholder='4111 2222 3333 4444'
                     value={cardNumber}
                     onChange={(e) => {
-                      // Add space formatting
                       const val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
                       const matches = val.match(/\d{4,16}/g);
                       const match = (matches && matches[0]) || '';
@@ -249,10 +232,9 @@ const HotelBook = () => {
                   Scan the UPI QR code below using any banking or payment app (Google Pay, PhonePe, Paytm, etc.) to pay.
                 </p>
 
-                {/* Live mock QR code image from qrserver.com */}
                 <div className='p-4 border-2 border-dashed border-blue-200 rounded-2xl bg-gray-50'>
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=rtms@bank&pn=RTMS%20Hotels&am=${totalPrice}&cu=INR`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=rtms@bank&pn=RTMS%20Tours&am=${totalPrice}&cu=INR`}
                     alt='Payment QR Code'
                     className='w-[200px] h-[200px]'
                   />
@@ -297,20 +279,20 @@ const HotelBook = () => {
 
           <div className='space-y-4 text-sm'>
             <div className='flex justify-between'>
-              <span className='text-gray-500'>Hotel</span>
-              <span className='font-semibold text-gray-800 text-right'>{hotelName}</span>
+              <span className='text-gray-500'>Tour Package</span>
+              <span className='font-semibold text-gray-800 text-right'>{tourName}</span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-gray-500'>Dates</span>
-              <span className='font-semibold text-gray-800 text-right'>{checkInDate} → {checkOutDate}</span>
+              <span className='text-gray-500'>Customer Name</span>
+              <span className='font-semibold text-gray-800'>{firstName} {lastName}</span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-gray-500'>Duration</span>
-              <span className='font-semibold text-gray-800'>{totalDays} Nights</span>
+              <span className='text-gray-500'>Start Date</span>
+              <span className='font-semibold text-gray-800'>{date}</span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-gray-500'>Booking Type</span>
-              <span className='font-semibold text-gray-800'>{roomType}</span>
+              <span className='text-gray-500'>Guests</span>
+              <span className='font-semibold text-gray-800'>{guestCount} Persons</span>
             </div>
 
             <div className='border-t pt-4 mt-4 space-y-2'>
@@ -326,4 +308,4 @@ const HotelBook = () => {
   );
 };
 
-export default HotelBook;
+export default TourPayment;
