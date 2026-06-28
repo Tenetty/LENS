@@ -30,9 +30,20 @@ function ChangeView({ center, zoom }) {
 }
 
 const cityCoords = {
-  colombo: [6.9271, 79.8612],
+  // India - Maharashtra
   nashik: [19.9975, 73.7898],
   pune: [18.5204, 73.8567],
+  matheran: [18.9888, 73.2712],
+  satara: [17.6805, 73.9897],
+  kolhapur: [16.7050, 74.2433],
+  bhandardara: [19.5358, 73.7663],
+  mumbai: [19.0760, 72.8777],
+  lonavala: [18.7557, 73.4091],
+  mahabaleshwar: [17.9258, 73.6510],
+  alibag: [18.6584, 72.8777],
+
+  // Sri Lanka
+  colombo: [6.9271, 79.8612],
   anuradhapura: [8.3114, 80.4037],
   kandy: [7.2906, 80.6337],
   galle: [6.0535, 80.2210],
@@ -43,8 +54,8 @@ const HotelMapPage = () => {
   // Fetch all hotels from backend API
   const { data, loading } = useFetch("/hotels");
   
-  // State for active map focus
-  const [mapCenter, setMapCenter] = useState([7.8731, 80.7718]); // Default center (Sri Lanka center / general)
+  // Default map center: Maharashtra, India
+  const [mapCenter, setMapCenter] = useState([19.15, 73.50]);
   const [mapZoom, setMapZoom] = useState(8);
   const [activeHotelId, setActiveHotelId] = useState(null);
 
@@ -65,7 +76,7 @@ const HotelMapPage = () => {
 
   // Extract coordinates for a hotel based on its city with a deterministic offset so pins do not overlap
   const getHotelCoordinates = (hotel) => {
-    const defaultCoords = [6.9271, 79.8612];
+    const defaultCoords = [19.15, 73.50]; // Default Maharashtra center fallback
     if (!hotel.city) return defaultCoords;
 
     const cleanCity = hotel.city.toLowerCase();
@@ -162,8 +173,8 @@ const HotelMapPage = () => {
           >
             <ChangeView center={mapCenter} zoom={mapZoom} />
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
             />
             {approvedHotels.map((hotel) => {
               const coords = getHotelCoordinates(hotel);
