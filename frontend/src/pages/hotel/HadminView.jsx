@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Swal from "sweetalert2";
+import { BACKEND_URL } from "../../config";
 
 const HadminView = () => {
 
@@ -62,7 +63,7 @@ const HadminView = () => {
         </h1>
         <div className="flex justify-center items-center w-full flex-col lg:flex-row pt-12 lg:pt-0">
           <img
-            src={state.HotelImg?.startsWith("http") ? state.HotelImg : `http://localhost:5000/api/hotels/images/${state.HotelImg}`}
+            src={state.HotelImg?.startsWith("http") ? state.HotelImg : `${BACKEND_URL}/api/hotels/images/${state.HotelImg}`}
             alt="Hotel Image"
             className=" w-[320px] md:w-[700px]  lg:w-[800px] rounded-lg mb-10"
           />
@@ -139,7 +140,7 @@ const HadminView = () => {
         {state.HotelImgs &&
           state.HotelImgs.map((image, index) => (
             <img
-              src={image?.startsWith("http") ? image : `http://localhost:5000/api/hotels/images/${image}`}
+              src={image?.startsWith("http") ? image : `${BACKEND_URL}/api/hotels/images/${image}`}
               alt={`Hotel Image ${index}`}
               key={index}
               class="ml-10 w-64 h-64 rounded-lg mb-2"
@@ -156,7 +157,7 @@ const HadminView = () => {
         {state.certificates &&
           state.certificates.map((image, index) => (
             <img
-              src={`http://localhost:5000/api/hotels/images/${image}`}
+              src={`${BACKEND_URL}/api/hotels/images/${image}`}
               alt={`Hotel Image ${index}`}
               key={index}
               class="ml-10 w-64 h-64 rounded-lg mb-2"

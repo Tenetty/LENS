@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {} from "react-icons/fa";
 import useFetch from "../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 
 const SearchBar = () => {
   const [from, setFrom] = useState("");
@@ -11,7 +12,7 @@ const SearchBar = () => {
   const { data } = useFetch(`/train/fetch/${from}/${to}`);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/train/fetch/stations")
+    fetch(`${API_URL}/train/fetch/stations`)
       .then(res => res.json())
       .then(data => {
         if(data && data.from && data.to) {

@@ -5,8 +5,10 @@ import App from "./App";
 import axios from "axios";
 import { AuthContextProvider } from "./context/authContext";
 
-// Configure Axios base URL: use local backend if running on localhost, otherwise fallback to live Render app
-axios.defaults.baseURL = window.location.hostname === "localhost" ? "http://localhost:5000/api" : "https://tourism-backend-yrfx.onrender.com/api";
+import { API_URL } from "./config";
+
+// Configure Axios base URL: dynamically resolved from config
+axios.defaults.baseURL = API_URL;
 
 // Attach JWT token as Authorization header on every request
 axios.interceptors.request.use((config) => {

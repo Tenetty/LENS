@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { BACKEND_URL } from "../../config";
 
 
 
@@ -67,7 +68,7 @@ const VehicleBook = () => {
     <div className="lg:p-20">
       <div className="flex justify-center items-center w-full flex-col lg:flex-row pt-12 lg:pt-0">
         <img
-          src={data.vehicleMainImg?.startsWith("http") ? data.vehicleMainImg : `http://localhost:5000/api/vehicle/images/${data.vehicleMainImg}`}
+          src={data.vehicleMainImg?.startsWith("http") ? data.vehicleMainImg : `${BACKEND_URL}/api/vehicle/images/${data.vehicleMainImg}`}
           alt="vehMainImg"
           className="w-[320px] md:w-[700px] lg:w-[600px] rounded-lg"
         />

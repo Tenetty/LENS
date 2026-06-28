@@ -17,8 +17,18 @@ connectDB();
 app.use(express.json({ limit: "50mb", extended: true }));
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://tourism-management2.vercel.app",
+  "https://tourism-management2-git-main-tenetty-s-projects.vercel.app"
+];
+if (process.env.FRONTEND_URL) {
+  const urls = process.env.FRONTEND_URL.split(",").map(url => url.trim());
+  allowedOrigins.push(...urls);
+}
+
 app.use(cors({
-  origin: ["http://localhost:3000", "https://tourism-management2.vercel.app", "https://tourism-management2-git-main-tenetty-s-projects.vercel.app"],
+  origin: allowedOrigins,
   credentials: true
 }));
 
@@ -137,7 +147,7 @@ const server = app.listen(port, () =>
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: ["http://localhost:3000", "https://tourism-management2.vercel.app"],
+    origin: allowedOrigins,
   },
 });
 

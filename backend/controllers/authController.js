@@ -150,7 +150,8 @@ const resetpasswordrequest = async (req, res) => {
     }
 
     const token = generateToken({ userId: user._id });
-    const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+    const resetLink = `${frontendUrl}/reset-password?token=${token}`;
 
     // create reusable transporter object using the default SMTP transport
     let transporter = nodemailer.createTransport({

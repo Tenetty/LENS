@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import HotelReserve from "./HotelReserve";
+import { BACKEND_URL } from "../../config";
 
 const HotelView = () => {
 
@@ -70,7 +71,7 @@ const checkOutDate = new Date(date.checkOutDate);
             </h1>
         <div className="flex justify-center items-center w-full flex-col lg:flex-row pt-12 lg:pt-0">
           <img
-            src={data.HotelImg?.startsWith("http") ? data.HotelImg : `http://localhost:5000/api/hotels/images/${data.HotelImg}`}
+            src={data.HotelImg?.startsWith("http") ? data.HotelImg : `${BACKEND_URL}/api/hotels/images/${data.HotelImg}`}
             alt="Hotel Image"
             className=" w-[320px] md:w-[700px]  lg:w-[800px] rounded-lg mb-10"
           />
@@ -137,7 +138,7 @@ const checkOutDate = new Date(date.checkOutDate);
   {data.HotelImgs &&
     data.HotelImgs.map((image, index) => (
       <img
-        src={image?.startsWith("http") ? image : `http://localhost:5000/api/hotels/images/${image}`}
+        src={image?.startsWith("http") ? image : `${BACKEND_URL}/api/hotels/images/${image}`}
         alt={`Hotel Image ${index}`}
         key={index}
         class="ml-10 w-64 h-64 rounded-lg mb-2"

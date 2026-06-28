@@ -1,5 +1,6 @@
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
+import { BACKEND_URL } from "../../config";
 
 
 const SearchCard = (item) => {
@@ -29,7 +30,7 @@ const SearchCard = (item) => {
                 key={item.id}
               >
                 <img
-                  src={item.HotelImg?.startsWith("http") ? item.HotelImg : `http://localhost:5000/api/hotels/images/${item.HotelImg}`}
+                  src={item.HotelImg?.startsWith("http") ? item.HotelImg : `${BACKEND_URL}/api/hotels/images/${item.HotelImg}`}
                   alt=""
                   className="w-full object-cover h-64"
                 />
