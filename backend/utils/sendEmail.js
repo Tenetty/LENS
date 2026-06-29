@@ -7,8 +7,8 @@ const sendEmail = async (to, subject, text, html) => {
       port: 587,
       secure: false,
       auth: {
-        user: "ppatil2343ab@gmail.com",
-        pass: "rlnogycqaqnywbbi",
+        user: process.env.EMAIL_USER || "girishdhanawade12@gmail.com",
+        pass: process.env.EMAIL_PASS || "rtqqugjhuleexpxb",
       },
       tls: {
         ciphers: "SSLv3",
@@ -16,7 +16,7 @@ const sendEmail = async (to, subject, text, html) => {
     });
 
     let info = await transporter.sendMail({
-      from: '"LENS Tourism Portal" <ppatil2343ab@gmail.com>',
+      from: `"LENS Tourism Portal" <${process.env.EMAIL_USER || "girishdhanawade12@gmail.com"}>`,
       to: to,
       subject: subject,
       text: text,

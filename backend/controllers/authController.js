@@ -159,8 +159,8 @@ const resetpasswordrequest = async (req, res) => {
       port: 587,
       secure: false,
       auth: {
-        user: "ppatil2343ab@gmail.com",
-        pass: "rlnogycqaqnywbbi",
+        user: process.env.EMAIL_USER || "girishdhanawade12@gmail.com",
+        pass: process.env.EMAIL_PASS || "rtqqugjhuleexpxb",
       },
       tls: {
         ciphers: "SSLv3",
@@ -169,7 +169,7 @@ const resetpasswordrequest = async (req, res) => {
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-      from: "ppatil2343ab@gmail.com",
+      from: process.env.EMAIL_USER || "girishdhanawade12@gmail.com",
       to: email,
       subject: "Reset Password",
       text: `Please click on the following link to reset your password: ${resetLink}`,
