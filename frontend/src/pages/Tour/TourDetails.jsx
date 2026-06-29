@@ -10,6 +10,7 @@ import InclusionExclusion from "../../components/Tour/InclusionExclusion";
 import { AuthContext } from "../../context/authContext";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { BACKEND_URL } from "../../config";
 
 const TourDetails = () => {
   const { id } = useParams();
@@ -37,7 +38,7 @@ const TourDetails = () => {
   }, [id]);
   //get email of current user
   const { user } = useContext(AuthContext);
-  const currentUser = user.email;
+  const currentUser = user?.email || "";
 
   const inputHandler = async (e) => {
     e.preventDefault();
@@ -112,7 +113,7 @@ const TourDetails = () => {
           </div>
           <div>
             <p className="text-3xl font-bold mb-6  text-gray-500">Duration</p>
-            <p className="text-2xl mb-6">{allTours.duration} days</p>
+            <p className="text-2xl mb-6">days :- {allTours.duration ? allTours.duration.split(" ")[0] : ""}</p>
           </div>
           <div>
             <p className="text-3xl font-bold mb-6  text-gray-500">Ranking</p>
@@ -136,7 +137,7 @@ const TourDetails = () => {
           <div className="">
             <div>
               <img
-                src={allTours.img}
+                src={allTours.img?.startsWith("http") ? allTours.img : `${BACKEND_URL}/api/hotels/images/${allTours.img}`}
                 alt={""}
                 class="h-auto max-w-full rounded-3xl"
               />

@@ -4,6 +4,7 @@ import TourNav from "../navbar/TourNav";
 import HeroTour from "../../pages/Tour/HeroTour";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { BACKEND_URL } from "../../config";
 
 import { useLocation } from "react-router-dom";
 
@@ -16,24 +17,26 @@ const Beach = () => {
   const [filterdTours, setTour] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getTours = async () => {
-    try {
-      const response = await axios.get("/tours");
-      const tours = response.data.filter((tour) => {
-        const category = tour.category.toLowerCase().replace(/\s+/g, "");
-        console.log("category", category);
-        return category === title;
-      });
+  useEffect(() => {
+    const getTours = async () => {
+      try {
+        const response = await axios.get("/tours");
+        const tours = response.data.filter((tour) => {
+          const categoryNormalized = tour.category.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]/g, "");
+          const titleNormalized = title.toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]/g, "");
+          return categoryNormalized === titleNormalized;
+        });
 
-      console.log(tours);
-      setTour(tours);
-    } catch (err) {
-      console.log(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  getTours();
+        console.log(tours);
+        setTour(tours);
+      } catch (err) {
+        console.log(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getTours();
+  }, [title]);
 
   return (
     <div>
@@ -64,7 +67,7 @@ const Beach = () => {
                   >
                     <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-3xl bg-gray-200 lg:aspect-none group-hover:opacity-40 lg:h-80">
                       <img
-                        src={tours.img}
+                        src={tours.img?.startsWith("http") ? tours.img : `${BACKEND_URL}/api/hotels/images/${tours.img}`}
                         alt="Tour"
                         className="h-full w-full object-cover object-center rounded-3xl lg:h-full lg:w-full"
                       />
@@ -79,7 +82,7 @@ const Beach = () => {
                           {tours.name}
                         </Link>
                         <p className="text-lg font-medium text-gray-900">
-                          {tours.duration} days
+                          days :- {tours.duration ? tours.duration.split(" ")[0] : ""}
                         </p>
                       </h3>
                       {/* <div className=" flex flex-row mr-2 space-x-3">

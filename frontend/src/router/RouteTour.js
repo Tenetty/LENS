@@ -261,13 +261,14 @@ const RouteTour = () => {
       <Route path="/addtour" element={<AddTourPackage />} />
       <Route path="/tour/view" element={<TourView />} />
       <Route path="/tour/update" element={<UpdateTour />} />
-
-      <Route path="/sunandbeach" element={<AllTourCategories />} />
-      <Route path="/hikingandtrekking" element={<AllTourCategories />} />
-      <Route path="/wildsafari" element={<AllTourCategories />} />
-      <Route path="/special" element={<AllTourCategories />} />
-      <Route path="/cultural" element={<AllTourCategories />} />
-      <Route path="/festival" element={<AllTourCategories />} />
+      <Route path="/fortsandtrekking" element={<AllTourCategories />} />
+      <Route path="/natureandcamping" element={<AllTourCategories />} />
+      <Route path="/heritageandculture" element={<AllTourCategories />} />
+      <Route path="/festivalsandlocalevents" element={<AllTourCategories />} />
+      <Route path="/villageexperience" element={<AllTourCategories />} />
+      <Route path="/localfoodtrails" element={<AllTourCategories />} />
+      <Route path="/farmtourism" element={<AllTourCategories />} />
+      <Route path="/artsandhandicrafts" element={<AllTourCategories />} />
 
       <Route path="/contactus" element={<ContactUs />} />
 

@@ -195,14 +195,14 @@ const AddTourPackage = () => {
                     }}
                   >
                     <option>--Select one--</option>
-                    <option value={"sun and beach"}>Sun and Beach</option>
-                    <option value={"hiking and trekking"}>
-                      Hiking and Trekking
-                    </option>
-                    <option value={"wild safari"}>Wild Safari</option>
-                    <option value={"special tours"}>Special Tour</option>
-                    <option vlaue={"cultural"}>Cultural</option>
-                    <option values={"festival"}>Festival</option>
+                    <option value="Forts & Trekking">Forts & Trekking</option>
+                    <option value="Nature & Camping">Nature & Camping</option>
+                    <option value="Heritage & Culture">Heritage & Culture</option>
+                    <option value="Festivals & Local Events">Festivals & Local Events</option>
+                    <option value="Village Experience">Village Experience</option>
+                    <option value="Local Food Trails">Local Food Trails</option>
+                    <option value="Farm Tourism">Farm Tourism</option>
+                    <option value="Arts & Handicrafts">Arts & Handicrafts</option>
                   </select>
                 </div>
               </div>

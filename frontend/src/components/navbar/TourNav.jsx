@@ -8,28 +8,36 @@ const nav_links = [
     display: "Explore LENS",
   },
   {
-    path: "/sunandbeach",
-    display: "Sun and Beach",
+    path: "/fortsandtrekking",
+    display: "Forts & Trekking",
   },
   {
-    path: "/hikingandtrekking",
-    display: "Hiking and Trekking",
+    path: "/natureandcamping",
+    display: "Nature & Camping",
   },
   {
-    path: "/wildsafari",
-    display: "Wild Safari",
+    path: "/heritageandculture",
+    display: "Heritage & Culture",
   },
   {
-    path: "/cultural",
-    display: "Cultural",
+    path: "/festivalsandlocalevents",
+    display: "Festivals & Events",
   },
   {
-    path: "/special",
-    display: "Special Tours",
+    path: "/villageexperience",
+    display: "Village Experience",
   },
   {
-    path: "/festival",
-    display: "Festivals",
+    path: "/localfoodtrails",
+    display: "Food Trails",
+  },
+  {
+    path: "/farmtourism",
+    display: "Farm Tourism",
+  },
+  {
+    path: "/artsandhandicrafts",
+    display: "Arts & Crafts",
   },
 ];
 

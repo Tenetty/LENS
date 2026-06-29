@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { AiOutlineRight } from "react-icons/ai";
 import TourNav from "../../components/navbar/TourNav";
 import axios from "axios";
+import { BACKEND_URL } from "../../config";
 
 const image = {
   backgroundImage:
@@ -137,7 +138,7 @@ const SerachResults = () => {
                   >
                     <div className="min-h-80 aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-3xl bg-gray-200 lg:aspect-none group-hover:opacity-40 lg:h-80">
                       <img
-                        src={tours.img}
+                        src={tours.img?.startsWith("http") ? tours.img : `${BACKEND_URL}/api/hotels/images/${tours.img}`}
                         alt="Tour"
                         className="h-full w-full object-cover object-center rounded-3xl lg:h-full lg:w-full"
                       />
@@ -152,7 +153,7 @@ const SerachResults = () => {
                           {tours.name}
                         </Link>
                         <p className="text-lg font-medium text-gray-900">
-                          {tours.duration} days
+                          days :- {tours.duration ? tours.duration.split(" ")[0] : ""}
                         </p>
                       </h3>
                       {/* <div className=" flex flex-row mr-2 space-x-3">
